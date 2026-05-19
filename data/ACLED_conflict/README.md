@@ -1,0 +1,1 @@
+This directory contains data from Armed Conflict Location & Event Data (ACLED) summarising weekly aggregates (per province) of different events related to violence, conflict and unrest, filtered for the affected provinces in the DRC since December 2025.
