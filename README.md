@@ -1,6 +1,8 @@
 # Bundibugyo Ebola virus outbreak, Democratic Republic of the Congo
 Data for the 2026 Bundibugyo Ebola outbreak in the DRC.
 
+This is work done in support of the current response led by colleagues in the Democratic Republic of the Congo.
+
 # Data sources
 - **DRC health zones:** [Humanitarian Data Exchange](https://data.humdata.org/dataset/drc-health-data) (MoH zones de santé shapefile)
 - **Road travel times:** [OSRM](http://project-osrm.org/) public demo
