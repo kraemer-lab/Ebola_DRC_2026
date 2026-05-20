@@ -1,0 +1,17 @@
+source: "Copernicus CDS satellite-land-cover (UN FAO LCCS); urban class 190 aggregated to DRC health zones"
+citation: "Copernicus Climate Change Service (C3S) (2022). Land cover classification gridded maps from 1992 to present derived from satellite observations. Copernicus Climate Data Store (CDS). Health-zone geometry: DRC_Health_zones.shp (see data/shapefiles/)."
+source_url: "https://cds.climate.copernicus.eu/datasets/satellite-land-cover"
+retrieved_on: "2026-05-20"
+license: "Copernicus Licence; see https://cds.climate.copernicus.eu/datasets/satellite-land-cover?tab=licence"
+contact: "https://cds.climate.copernicus.eu"
+runtime: R
+period: "2022"
+notes: |
+  Health-zone urban land-cover fraction (LCCS code 190) for DRC. Upstream rasters from
+  CDS dataset satellite-land-cover (v2.1.1); zonal aggregation via DARTS pipeline is
+  planned but not yet in-repo—processed/COD-2022-satellite_land_cover_urban.zs.nc is
+  the current intermediate (region = ZSCode, variable lccs_class = fraction 0–1).
+  process.R joins to data/shapefiles/DRC_Health_zones.shp on ZSCode, exports
+  processed/fao_lccs__urban_fraction__static.csv (nom, urban_fraction) and
+  processed_plot.png. query_cds_api.py is a draft CDS downloader; raw/ is empty.
+  Coverage: national, 519 zones. See README.md for regeneration and limitations.
