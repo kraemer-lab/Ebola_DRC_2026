@@ -1,0 +1,43 @@
+name: QA
+
+on:
+  pull_request:
+    paths:
+      - 'data/**'
+      - 'tools/**'
+      - '.github/workflows/qa.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/**'
+      - 'tools/**'
+      - '.github/workflows/qa.yml'
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: tools/requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r tools/requirements.txt
+
+      - name: Run QA
+        run: python -m tools.qa
+
+      - name: Upload QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-logs
+          path: qa/
+          if-no-files-found: ignore
