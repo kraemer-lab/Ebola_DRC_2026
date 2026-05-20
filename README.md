@@ -5,7 +5,7 @@ This is work done in support of the current response led by colleagues in the De
 
 # Data sources
 - **DRC health zones:** [Humanitarian Data Exchange](https://data.humdata.org/dataset/drc-health-data) (MoH zones de santé shapefile)
-- **Epidemiological data:** [Weekly External Situation Report 01, Data as of 18 May 2026][(https://iris.who.int/server/api/core/bitstreams/bb1d4668-04e0-4563-b7c4-d1bdefbc9f05/content) 
+- **Epidemiological data:** [Weekly External Situation Report 01, Data as of 18 May 2026](https://iris.who.int/server/api/core/bitstreams/bb1d4668-04e0-4563-b7c4-d1bdefbc9f05/content) 
 - **Road travel times:** [OSRM](http://project-osrm.org/) public demo
 - **Conflicts and acts of violence:** [ACLED](https://acleddata.com)
 - **Internal displacements:** International Organisation for Migrants ([IOM](https://dtm.iom.int))
