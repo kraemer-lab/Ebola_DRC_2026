@@ -1,4 +1,3 @@
 dataset,file,type,status,n_rows,n_zones_covered,reasons,checked_at
-ccvi,metadata.yaml,metadata,pass,,,,2026-05-20T23:02:30+00:00
-ccvi,ccvi__socioeconomic_deprivation__static.csv,vector,pass,519,519,,2026-05-20T23:02:30+00:00
-ccvi,ccvi__socioeconomic_inequality__static.csv,vector,pass,519,519,,2026-05-20T23:02:30+00:00
+gdp_pc,metadata.yaml,metadata,pass,,,,2026-05-20T23:13:55+00:00
+gdp_pc,gdp_pc__gdp_pc__static.csv,vector,pass,519,519,,2026-05-20T23:13:55+00:00
