@@ -45,7 +45,7 @@ system2(python, c("-m", "pip install -r requirements.txt"))
 # to geoJSON
 
 
-ncdf_raw <- nc_open("data/fao_lccs/processed/COD-2022-satellite_land_cover_urban.zs.nc")
+ncdf_raw <- nc_open("data/fao_lccs/raw/COD-2022-satellite_land_cover_urban.zs.nc")
 names(ncdf_raw$var)
 names(ncdf_raw$dim)
 
@@ -59,6 +59,19 @@ urbanization_table <- data.frame(ZSCode = regions,
                                  urban_fraction = vals)
 
 healthzone_shapefile <- st_read("data/shapefiles/DRC_Health_zones.shp")
+
+# Disambiguate Nom for zones whose name appears in more than one province
+# (currently Bili and Lubunga), mirroring the Python schema contract.
+nom_counts <- healthzone_shapefile |>
+  dplyr::count(Nom) |>
+  dplyr::filter(n > 1) |>
+  dplyr::pull(Nom)
+healthzone_shapefile <- healthzone_shapefile |>
+  dplyr::mutate(Nom = dplyr::if_else(
+    Nom %in% nom_counts,
+    paste0(Nom, " (", PROVINCE, ")"),
+    Nom
+  ))
 
 joined_shapefile <- healthzone_shapefile |>
   dplyr::left_join(urbanization_table)
