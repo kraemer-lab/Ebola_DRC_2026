@@ -13,10 +13,10 @@ The following section contains a detailed log on the pipeline used to extract da
 
 | Province   | PDF file |
 |-----------|----------|
-| Ituri     | `estimations_population-mobilite-_ituri_mars2026.pdf` |
-| Nord-Kivu | `estimations_population-mobilite-_nord-kivu_mars2026.pdf` |
-| Haut-Uele | `estimations_population-mobilite-_haut-uele_mars2026.pdf` |
-| Tshopo    | `estimations_population-mobilite-_tshopo_mars2026.pdf` |
+| Ituri     | [`estimations_population-mobilite-_ituri_mars2026.pdf`](https://www.flowminder.org/media/yabhszz0/estimations_population-mobilite-_ituri_mars2026.pdf) |
+| Nord-Kivu | [`estimations_population-mobilite-_nord-kivu_mars2026.pdf`](https://www.flowminder.org/media/krekplgz/estimations_population-mobilite-_nord-kivu_mars2026.pdf) |
+| Haut-Uele | [`estimations_population-mobilite-_haut-uele_mars2026.pdf`](https://www.flowminder.org/media/izuleilq/estimations_population-mobilite-_haut-uele_mars2026.pdf) |
+| Tshopo    | [`estimations_population-mobilite-_tshopo_mars2026.pdf`](https://www.flowminder.org/media/pwejomrq/estimations_population-mobilite-_tshopo_mars2026.pdf) |
 
 ---
 
