@@ -1,3 +1,4 @@
 dataset,file,type,status,n_rows,n_zones_covered,reasons,checked_at
-fao_lccs,metadata.yaml,metadata,pass,,,,2026-05-20T23:31:12+00:00
-fao_lccs,fao_lccs__urban_fraction__static.csv,vector,pass,519,519,,2026-05-20T23:31:12+00:00
+osrm,metadata.yaml,metadata,pass,,,,2026-05-20T23:43:27+00:00
+osrm,osrm__road_distance__static.csv,vector,pass,519,519,,2026-05-20T23:43:27+00:00
+osrm,osrm__travel_time__static.csv,vector,pass,519,519,,2026-05-20T23:43:27+00:00

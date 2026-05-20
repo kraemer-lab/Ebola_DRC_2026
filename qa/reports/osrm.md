@@ -1,17 +1,17 @@
-# QA report: ccvi
+# QA report: osrm
 
-_Checked: 2026-05-20T23:38:05+00:00_
+_Checked: 2026-05-20T23:43:27+00:00_
 
 **Status counts:** {'pass': 3}
 
 ## `metadata.yaml` (metadata) — **pass**
 
-## `ccvi__socioeconomic_deprivation__static.csv` (vector) — **pass**
+## `osrm__road_distance__static.csv` (vector) — **pass**
 - rows: 519
 - zones covered: 519 / 519
 - resolution: static
 
-## `ccvi__socioeconomic_inequality__static.csv` (vector) — **pass**
+## `osrm__travel_time__static.csv` (vector) — **pass**
 - rows: 519
 - zones covered: 519 / 519
 - resolution: static

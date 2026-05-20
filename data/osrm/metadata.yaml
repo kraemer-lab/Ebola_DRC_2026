@@ -3,7 +3,7 @@ citation: "OpenStreetMap contributors (2026). Routing via Project OSRM. Health-z
 source_url: "http://project-osrm.org/"
 retrieved_on: "2026-03-17"
 license: "OpenStreetMap data © OpenStreetMap contributors, ODbL 1.0 (https://www.openstreetmap.org/copyright). OSRM routing engine: BSD-2-Clause."
-contact: ""
+contact: "https://github.com/Project-OSRM/osrm-backend/issues"
 runtime: R
 period: "2026-03"
 notes: |
@@ -13,5 +13,5 @@ notes: |
   routed with osrm::osrmTable() (car profile, public OSRM API). Outputs:
   processed/osrm__travel_time__static.csv, processed/osrm__road_distance__static.csv
   (square OD matrices; zone labels from shapefile field Nom). Coverage: national.
-  Known issues: duplicate Nom labels (Bili, Lubunga); Idjwi largely NA (island not
-  connected in car network). See README.md for format, regeneration, and limitations.
+  Known issues: Idjwi largely NA (island not connected in car network).
+  See README.md for format, regeneration, and limitations.

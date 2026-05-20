@@ -26,6 +26,19 @@ tryCatch({
   stop("Error reading file. Please ensure the shapefile exists and is named correctly.")
 })
 
+# Disambiguate Nom for zones whose name appears in more than one province
+# (currently Bili and Lubunga), mirroring the Python schema contract.
+nom_counts <- zones_sf |>
+  dplyr::count(Nom) |>
+  dplyr::filter(n > 1) |>
+  dplyr::pull(Nom)
+zones_sf <- zones_sf |>
+  dplyr::mutate(Nom = dplyr::if_else(
+    Nom %in% nom_counts,
+    paste0(Nom, " (", PROVINCE, ")"),
+    Nom
+  ))
+
 # ------------------------- 3. Prepare Centroids -------------------------------
 # The API requires coordinates in degrees, not meters.
 zones_sf_4326 <- st_transform(zones_sf, crs = 4326)
