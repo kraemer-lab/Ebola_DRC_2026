@@ -1,5 +1,5 @@
-# Bundibugyo Ebola virus outbreak, Democratic Republic of the Congo
-Data for the 2026 Bundibugyo Ebolavirus (BDBV) outbreak in the DRC.
+# Bundibugyo Ebola virus outbreak 2026
+Data for the 2026 Bundibugyo Ebolavirus (BDBV) outbreak.
 
 This is work done in support of the current response led by colleagues in the Democratic Republic of the Congo.
 
