@@ -20,12 +20,11 @@ These data support outbreak modelling where total population or settlement press
 |----|----|
 | `processed/worldpop__pop_count__static.csv` | Repo contract table: `nom`, `pop_count` (519 rows) |
 | `processed/worldpop__pop_density__static.csv` | Repo contract table: `nom`, `pop_density` (people per km²) |
-| `processed/COD-2025-population.zs.nc` | Intermediate NetCDF: `pop_count`, `area`, `pop_density` by health-zone code (`region` = `ZSCode`) |
+| `raw/COD-2025-population.zs.nc` | Intermediate NetCDF: `pop_count`, `area`, `pop_density` by health-zone code (`region` = `ZSCode`) |
 | `popcount_processed_plot.png` | Choropleth of population count |
 | `popdensity_processed_plot.png` | Choropleth of population density |
 | `process.R` | Join NetCDF to shapefile, plot, and write CSVs |
 | `metadata.yaml` | Provenance, licence, and pipeline notes |
-| `raw/` | Reserved for raw WorldPop downloads (currently empty) |
 
 **Coverage:** 519 health zones (national), aligned with `data/shapefiles/DRC_Health_zones.shp`.\
 **Temporal scope:** Static extract for **2025** (`COD-2025-…`); the NetCDF contains a single time layer.
@@ -98,7 +97,6 @@ Outputs are overwritten:
 | **Static year** | Values reflect the **2025** WorldPop layer in `COD-2025-population.zs.nc`; not a time series in this folder. |
 | **Raster → zone** | Counts and densities depend on the upstream DARTS/zonal-statistics workflow (how grid cells intersect zone polygons). |
 | **Modelled population** | WorldPop estimates are model-based, not census counts at zone level; uncertainty is not included in these tables. |
-| **Duplicate `nom`** | Two zones share the name **Bili** and two **Lubunga**; use `ZSCode` from the shapefile for unambiguous joins. |
 | **Pipeline in flux** | Raw WorldPop download and DARTS processing are not fully reproducible from this repo yet; `processed/COD-2025-population.zs.nc` is the current source of truth for regeneration. |
 
 ------------------------------------------------------------------------
