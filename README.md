@@ -124,6 +124,11 @@ build/
 
     LFS is required because binary raw blobs (`*.xlsx`, `*.zip`, `*.pdf`, `*.tif`, etc.) under `data/*/raw/` are stored via Git LFS — see `.gitattributes`.
 
+    Additionally, maintainers who will cut releases need:
+
+    -   `gh` CLI installed and authenticated (`gh auth login`).
+    -   `$EDITOR` environment variable set (used by `tools.release` for the description prompt).
+
 1.  Create `data/<your_dataset>/` with `raw/`, `metadata.yaml`, and (when you have outputs) `process.{py,R}` + `processed/`.
 
 2.  Make sure your processed filenames match the contract above. Add any name aliases your data uses to `data/aliases.csv`.
@@ -142,6 +147,23 @@ build/
     ```
 
 5.  Open a PR. CI runs `pytest` + `tools.qa` and blocks merge on any failures. Merges to `main` are manual.
+
+6.  Publishing a release (maintainer task). After a merge to `main` introduces changes worth a new public snapshot:
+
+    ```
+    .venv/bin/python -m tools.release
+    ```
+
+    This will:
+
+    -   archive the current `build/` (plus QA logs and the previous build's description) as a GitHub Release tagged `build-YYYY-MM-DD-<sha>`
+    -   rebuild from current data
+    -   open `$EDITOR` to capture a "what's new" description for the new build
+    -   update `README.md` (current-build pointers + Past releases log)
+
+    Then `git add build/ qa/*.csv README.md && git commit && git push` to land the new build alongside its description.
+
+    Use `tools.build_geojson` (not `tools.release`) for normal local iteration — `tools.release` is only for cutting versioned snapshots.
 
 # Citation
 
