@@ -1,6 +1,8 @@
 {
   "shapefile": "data/shapefiles/DRC_Health_zones.shp",
   "n_features": 519,
+  "built_at": "2026-05-22T00:29:31+00:00",
+  "commit": "9694d10",
   "datasets": [
     {
       "folder": "ACLED_conflict",
@@ -243,7 +245,26 @@
       "license": "OpenStreetMap data \u00a9 OpenStreetMap contributors, ODbL 1.0 (https://www.openstreetmap.org/copyright). OSRM routing engine: BSD-2-Clause.",
       "contact": "https://github.com/Project-OSRM/osrm-backend/issues",
       "status": "active",
-      "outputs": []
+      "outputs": [
+        {
+          "file": "osrm__road_distance__static.matrix.csv",
+          "type": "matrix",
+          "dataset_token": "osrm",
+          "metric": "road_distance",
+          "resolution": "static",
+          "in_geojson": false,
+          "matrix_log": "qa/matrix_log.csv"
+        },
+        {
+          "file": "osrm__travel_time__static.matrix.csv",
+          "type": "matrix",
+          "dataset_token": "osrm",
+          "metric": "travel_time",
+          "resolution": "static",
+          "in_geojson": false,
+          "matrix_log": "qa/matrix_log.csv"
+        }
+      ]
     },
     {
       "folder": "refugee_sites",
