@@ -1,5 +1,7 @@
 # GRID3 health facility counts by health zone
 
+[NOTE: Before using, please read this issue on the processing of the data.](https://github.com/kraemer-lab/Ebola_DRC_2026/issues/14)
+
 Health-zone-level counts and **density** of health facilities in the Democratic Republic of the Congo (DRC), from [GRID3 COD Health Facilities v8.0](https://data.grid3.org/datasets/GRID3::grid3-cod-health-facilities-v8-0/about), aggregated to `data/shapefiles/DRC_Health_zones.shp`.
 
 These data support outbreak analyses where facility density, care capacity proxies, or gaps in the formal health network matter. GRID3 integrates Ministry of Health and partner sources; it is generally **more complete** than crowdsourced OSM-only layers (see `data/healthsites_io/` for comparison).
