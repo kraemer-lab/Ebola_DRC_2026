@@ -27,7 +27,7 @@ These data complement the WHO weekly external sitreps in `data/epi/` by providin
 
 | File | Description |
 |-----------------------|-------------------------------------------------|
-| `processed/insp_sitrep__*__daily.csv` | Twenty-nine repo-contract tables (see below) |
+| `processed/insp_sitrep__*__daily.csv` | Twenty-three repo-contract tables (see below) |
 | `raw/SitRep_MVE_001:2026.pdf` | Situation report 001 |
 | `raw/SitRep_MVE_002:2026.pdf` | Situation report 002 |
 | `raw/SitRep_MVE_004:2026.pdf` | Situation report 004 (**003** not in repo) |
@@ -81,7 +81,7 @@ For this folder: **`insp_sitrep__<metric>__daily.csv`**.
 
 ### Points of entry (PoE)
 
-Per-zone totals (one row per `nom` and `date`):
+Zone-level totals only (one row per `nom` and `date`; per-site PoE breakdown is not exported):
 
 | Processed file | Metric column | Description |
 |--------------------------|-------------------------|----------------------|
@@ -92,44 +92,21 @@ Per-zone totals (one row per `nom` and `date`):
 | `insp_sitrep__total_poe_refused_screening__daily.csv` | `total_poe_refused_screening` | Total refused screening |
 | `insp_sitrep__total_poe_refused_hand_washing__daily.csv` | `total_poe_refused_hand_washing` | Total refused hand washing |
 
-Per-PoE breakdown (one row per `nom`, `date`, and `PoE`):
-
-| Processed file | Metric column | Description |
-|--------------------------|-------------------------|----------------------|
-| `insp_sitrep__poe_screened__daily.csv` | `poe_screened` | Screened at named PoE |
-| `insp_sitrep__poe_passed__daily.csv` | `poe_passed` | Passed at named PoE |
-| `insp_sitrep__poe_sanitised__daily.csv` | `poe_sanitised` | Sanitised at named PoE |
-| `insp_sitrep__poe_hand_washing__daily.csv` | `poe_hand_washing` | Hand washing at named PoE |
-| `insp_sitrep__poe_refused_screening__daily.csv` | `poe_refused_screening` | Refused screening at named PoE |
-| `insp_sitrep__poe_refused_hand_washing__daily.csv` | `poe_refused_hand_washing` | Refused hand washing at named PoE |
-
 **Zones in current data (canonical `nom`):** Adi, Aru, Bambu, Bunia, Butembo, Goma, Katwa, Kilo, Komanda, Mahagi, Mangala, Miti-Murhesa, Mongbalu, Nizi, Nyakunde, Rwampara, Tchomia.
 
 ------------------------------------------------------------------------
 
 ## CSV contract
 
-Each file is a **long-format vector** time series.
-
-### Standard tables (`nom`, `date`, `<metric>`)
+Each file is a **long-format vector** time series with columns `nom`, `date`, and one metric:
 
 | Column | Description |
-|----------------------------|--------------------------------------------|
+|--------|-------------|
 | `nom` | **Canonical** health-zone name (`Nom` from `data/shapefiles/DRC_Health_zones.shp`, with province suffix where the shapefile requires it, e.g. `Bili (Nord-Ubangi)`). After `process.R`, `nom` must pass repo QA (`tools/lib/schema.py`). |
 | `date` | ISO date (`YYYY-MM-DD`) of the situation report (data-as-of date for that extract) |
 | `<metric>` | Numeric count for that zone and date, or **`ND`** when not reported / not disclosed in that sitrep |
 
 **Uniqueness:** One row per (`nom`, `date`) within each file.
-
-### PoE breakdown tables (`nom`, `date`, `PoE`, `<metric>`)
-
-Same as above, plus:
-
-| Column | Description |
-|----------------------------|--------------------------------------------|
-| `PoE` | Point-of-entry identifier as reported in the sitrep (e.g. `Aeroport`, `Pont_Nizi`); not a shapefile zone name |
-
-**Uniqueness:** One row per (`nom`, `date`, `PoE`) within each per-PoE file.
 
 **Missing values:** The literal string `ND` is used in source tables where a cell is blank or marked not disponible; consumers should treat `ND` as missing for modelling.
 
@@ -166,7 +143,7 @@ Join to other datasets on **`nom`**, or on **`ZSCode`** from the shapefile when 
 2.  Load `data/aliases.csv` and map observed labels to canonical `nom` (shared across datasets; e.g. `Mongbwalu` → `Mongbalu`, `Nyankunde` → `Nyakunde`, `Ada` → `Adi`).
 3.  Overwrite each processed CSV in place (`row.names = FALSE`, unquoted UTF-8).
 
-The script **stops with an error** if any `nom` cannot be resolved, or if two rows share the same key after mapping (`nom` + `date`, or `nom` + `date` + `PoE` when a `PoE` column is present). Add a row to `data/aliases.csv` (with `source_dataset: insp_sitrep` in the notes column) before re-running.
+The script **stops with an error** if any `nom` cannot be resolved, or if two rows share the same (`nom`, `date`) after mapping. Add a row to `data/aliases.csv` (with `source_dataset: insp_sitrep` in the notes column) before re-running.
 
 ### 3. QA and build
 
@@ -206,7 +183,7 @@ After a new sitrep:
 | **Missing sitrep 003** | `SitRep_MVE_003:2026.pdf` is not in `raw/`; date series may have gaps between 002 and 004. |
 | **Date semantics** | `date` is the sitrep **report date**, not necessarily onset or specimen collection date. |
 | **No confirmed-death “new” file** | Only cumulative confirmed deaths are exported; add `new_confirmed_deaths` if sitreps report it consistently. |
-| **PoE labels** | `PoE` values are sitrep-specific site names; they are not normalised to the shapefile. |
+| **PoE granularity** | Only zone-level `total_poe_*` totals are exported; per-site PoE breakdown in the PDFs is not in `processed/`. |
 | **No PDF automation** | `process.R` does not parse PDFs; it only normalises zone names in existing CSVs. |
 
 ------------------------------------------------------------------------

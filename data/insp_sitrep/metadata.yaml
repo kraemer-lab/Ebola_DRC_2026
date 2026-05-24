@@ -8,14 +8,14 @@ runtime: none
 period: "2026-05-14 to 2026-05-23"
 notes: |
   Daily health-zone indicators manually extracted from INSP SitRep MVE PDFs in raw/
-  (SitRep_MVE_001, 002, 004, 005, 006, 007, 008, 009:2026; report 003 not committed). Twenty-nine
-  long-format vectors in processed/: insp_sitrep__<metric>__daily.csv. Core case,
-  death, and contact-tracing tables use columns nom, date, and one metric; PoE
-  tables add PoE (point-of-entry identifier within the zone). Cell value ND = not
-  reported in that sitrep. Outbreak-affected zones only (e.g. Adi, Aru, Bambu,
-  Bunia, Butembo, Goma, Katwa, Kilo, Komanda, Mahagi, Mangala, Miti-Murhesa,
-  Mongbalu, Nizi, Nyakunde, Rwampara, Tchomia in current files). Zone names may
-  need data/aliases.csv (Mongbwalu→Mongbalu, Nyankunde→Nyakunde, Ada→Adi).
-  Complements data/epi/ (WHO weekly external sitreps). process.R normalises nom
-  to canonical shapefile names; it does not parse PDFs. See README.md for the full
-  file list, CSV contract, and limitations.
+  (SitRep_MVE_001, 002, 004, 005, 006, 007, 008, 009:2026; report 003 not committed).
+  Twenty-three long-format vectors in processed/: insp_sitrep__<metric>__daily.csv
+  with columns nom, date, and one metric (case, death, contact-tracing,
+  hospitalisation, or zone-level total_poe_* counts). Cell value ND = not reported
+  in that sitrep. Outbreak-affected zones only (e.g. Adi, Aru, Bambu, Bunia,
+  Butembo, Goma, Katwa, Kilo, Komanda, Mahagi, Mangala, Miti-Murhesa, Mongbalu,
+  Nizi, Nyakunde, Rwampara, Tchomia in current files). Zone names may need
+  data/aliases.csv (Mongbwalu→Mongbalu, Nyankunde→Nyakunde, Ada→Adi). Complements
+  data/epi/ (WHO weekly external sitreps). process.R normalises nom to canonical
+  shapefile names; it does not parse PDFs. See README.md for the full file list,
+  CSV contract, and limitations.
