@@ -119,7 +119,8 @@ normalize_processed_csvs <- function(
     n_before <- nrow(df)
     df <- normalize_nom_column(df, canonical_noms, alias_index)
 
-    key_cols <- intersect(c("nom", "date"), names(df))
+    # Per-PoE rows share (nom, date); include PoE when present.
+    key_cols <- intersect(c("nom", "date", "PoE"), names(df))
     dup <- duplicated(df[, key_cols, drop = FALSE])
     if (any(dup)) {
       stop(

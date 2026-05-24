@@ -1,8 +1,8 @@
 # INSP situation reports (SitRep MVE) — health-zone outbreak indicators
 
-Daily **case, death, and contact-tracing indicators** by DRC health zone, extracted from Institut National de Santé Publique (INSP) **Situation Reports** on the 2026 Bundibugyo Ebolavirus (BDBV) outbreak (PDF series `SitRep_MVE_*`).
+Daily **case, death, contact-tracing, hospitalisation, and point-of-entry (PoE)** indicators by DRC health zone, extracted from Institut National de Santé Publique (INSP) **Situation Reports** on the 2026 Bundibugyo Ebolavirus (BDBV) outbreak (PDF series `SitRep_MVE_*`).
 
-These data complement the WHO weekly external sitreps in `data/epi/` by providing **INSP-internal reporting** at finer temporal resolution (per report date) and additional contact-tracing fields not exported in the WHO contract file.
+These data complement the WHO weekly external sitreps in `data/epi/` by providing **INSP-internal reporting** at finer temporal resolution (per report date) and additional operational fields not exported in the WHO contract file.
 
 ------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ These data complement the WHO weekly external sitreps in `data/epi/` by providin
 **Relationship to other repo data:**
 
 | Folder | Source | Grain | Role |
-|--------|--------|-------|------|
+|-------------------|-------------------|-----------------|-----------------|
 | `data/epi/` | WHO Weekly External Situation Report | Weekly | Official external case/death tables |
 | `data/insp_sitrep/` | INSP SitRep MVE PDFs | Daily (per report date) | INSP operational indicators and contact metrics |
 
@@ -26,8 +26,8 @@ These data complement the WHO weekly external sitreps in `data/epi/` by providin
 ## Files
 
 | File | Description |
-|------|-------------|
-| `processed/insp_sitrep__*__daily.csv` | Twelve repo-contract tables (see below) |
+|-----------------------|-------------------------------------------------|
+| `processed/insp_sitrep__*__daily.csv` | Twenty-nine repo-contract tables (see below) |
 | `raw/SitRep_MVE_001:2026.pdf` | Situation report 001 |
 | `raw/SitRep_MVE_002:2026.pdf` | Situation report 002 |
 | `raw/SitRep_MVE_004:2026.pdf` | Situation report 004 (**003** not in repo) |
@@ -38,7 +38,7 @@ These data complement the WHO weekly external sitreps in `data/epi/` by providin
 
 **Coverage:** Health zones **with a row in at least one processed file** (outbreak-affected subset; not all 519 national zones).
 
-**Temporal scope:** Report dates **2026-05-14** through **2026-05-20** in the current commit (grows as new sitreps are added).
+**Temporal scope:** Report dates **2026-05-14** through **2026-05-23** in the current commit (grows as new sitreps are added).
 
 ------------------------------------------------------------------------
 
@@ -46,14 +46,16 @@ These data complement the WHO weekly external sitreps in `data/epi/` by providin
 
 Processed files follow the repo grammar documented in `tools/lib/schema.py`:
 
-```text
+``` text
 <dataset>__<metric>__<resolution>.csv
 ```
 
 For this folder: **`insp_sitrep__<metric>__daily.csv`**.
 
+### Case, death, and contact tracing
+
 | Processed file | Metric column | Description |
-|----------------|---------------|-------------|
+|--------------------------|-------------------------|----------------------|
 | `insp_sitrep__new_suspected_cases__daily.csv` | `new_suspected_cases` | New suspected cases since previous report |
 | `insp_sitrep__cumulative_suspected_cases__daily.csv` | `cumulative_suspected_cases` | Cumulative suspected cases |
 | `insp_sitrep__new_confirmed_cases__daily.csv` | `new_confirmed_cases` | New confirmed cases |
@@ -67,34 +69,80 @@ For this folder: **`insp_sitrep__<metric>__daily.csv`**.
 | `insp_sitrep__cumulative_contacts_isolated__daily.csv` | `cumulative_contacts_isolated` | Cumulative contacts in isolation |
 | `insp_sitrep__contacts_seen__daily.csv` | `contacts_seen` | Contacts seen / followed up (as reported) |
 
-**Zones in current data (canonical `nom`):** Bambu, Bunia, Butembo, Goma, Katwa, Mongbalu, Nyakunde, Rwampara.
+### Hospitalisation (ETC / treatment centres)
+
+| Processed file | Metric column | Description |
+|--------------------------|-------------------------|----------------------|
+| `insp_sitrep__hospitalised__daily.csv` | `hospitalised` | Patients hospitalised (in bed) on report date |
+| `insp_sitrep__in_bed_previous_day__daily.csv` | `in_bed_previous_day` | Patients in bed on the previous report date |
+| `insp_sitrep__new_hosp_admissions__daily.csv` | `new_all_admissions` | New admissions (all categories) |
+| `insp_sitrep__new_hosp_detainees__daily.csv` | `new_hosp_detainees` | New detainee admissions |
+| `insp_sitrep__new_hosp_other__daily.csv` | `new_other` | New admissions (other categories) |
+
+### Points of entry (PoE)
+
+Per-zone totals (one row per `nom` and `date`):
+
+| Processed file | Metric column | Description |
+|--------------------------|-------------------------|----------------------|
+| `insp_sitrep__total_poe_screened__daily.csv` | `total_poe_screened` | Total persons screened at PoEs in the zone |
+| `insp_sitrep__total_poe_passed__daily.csv` | `total_poe_passed` | Total passed screening |
+| `insp_sitrep__total_poe_sanitised__daily.csv` | `total_poe_sanitised` | Total sanitised |
+| `insp_sitrep__total_poe_hand_washing__daily.csv` | `total_poe_hand_washing` | Total hand-washing events |
+| `insp_sitrep__total_poe_refused_screening__daily.csv` | `total_poe_refused_screening` | Total refused screening |
+| `insp_sitrep__total_poe_refused_hand_washing__daily.csv` | `total_poe_refused_hand_washing` | Total refused hand washing |
+
+Per-PoE breakdown (one row per `nom`, `date`, and `PoE`):
+
+| Processed file | Metric column | Description |
+|--------------------------|-------------------------|----------------------|
+| `insp_sitrep__poe_screened__daily.csv` | `poe_screened` | Screened at named PoE |
+| `insp_sitrep__poe_passed__daily.csv` | `poe_passed` | Passed at named PoE |
+| `insp_sitrep__poe_sanitised__daily.csv` | `poe_sanitised` | Sanitised at named PoE |
+| `insp_sitrep__poe_hand_washing__daily.csv` | `poe_hand_washing` | Hand washing at named PoE |
+| `insp_sitrep__poe_refused_screening__daily.csv` | `poe_refused_screening` | Refused screening at named PoE |
+| `insp_sitrep__poe_refused_hand_washing__daily.csv` | `poe_refused_hand_washing` | Refused hand washing at named PoE |
+
+**Zones in current data (canonical `nom`):** Adi, Aru, Bambu, Bunia, Butembo, Goma, Katwa, Kilo, Komanda, Mahagi, Mangala, Miti-Murhesa, Mongbalu, Nizi, Nyakunde, Rwampara, Tchomia.
 
 ------------------------------------------------------------------------
 
 ## CSV contract
 
-Each file is a **long-format vector** time series:
+Each file is a **long-format vector** time series.
+
+### Standard tables (`nom`, `date`, `<metric>`)
 
 | Column | Description |
-|--------|-------------|
+|----------------------------|--------------------------------------------|
 | `nom` | **Canonical** health-zone name (`Nom` from `data/shapefiles/DRC_Health_zones.shp`, with province suffix where the shapefile requires it, e.g. `Bili (Nord-Ubangi)`). After `process.R`, `nom` must pass repo QA (`tools/lib/schema.py`). |
 | `date` | ISO date (`YYYY-MM-DD`) of the situation report (data-as-of date for that extract) |
 | `<metric>` | Numeric count for that zone and date, or **`ND`** when not reported / not disclosed in that sitrep |
 
 **Uniqueness:** One row per (`nom`, `date`) within each file.
 
+### PoE breakdown tables (`nom`, `date`, `PoE`, `<metric>`)
+
+Same as above, plus:
+
+| Column | Description |
+|----------------------------|--------------------------------------------|
+| `PoE` | Point-of-entry identifier as reported in the sitrep (e.g. `Aeroport`, `Pont_Nizi`); not a shapefile zone name |
+
+**Uniqueness:** One row per (`nom`, `date`, `PoE`) within each per-PoE file.
+
 **Missing values:** The literal string `ND` is used in source tables where a cell is blank or marked not disponible; consumers should treat `ND` as missing for modelling.
 
 **Example (R):**
 
-```r
+``` r
 library(here)
 
 cases <- read.csv(
   here("data/insp_sitrep/processed/insp_sitrep__cumulative_confirmed_cases__daily.csv"),
   na.strings = "ND"
 )
-cases[cases$date == "2026-05-20", c("nom", "cumulative_confirmed_cases")]
+cases[cases$date == "2026-05-23", c("nom", "cumulative_confirmed_cases")]
 ```
 
 Join to other datasets on **`nom`**, or on **`ZSCode`** from the shapefile when names are ambiguous.
@@ -105,25 +153,26 @@ Join to other datasets on **`nom`**, or on **`ZSCode`** from the shapefile when 
 
 ### 1. Manual extraction
 
-1. Add each new `SitRep_MVE_###:2026.pdf` under `raw/`.
-2. Transcribe zone-level counts into the appropriate `processed/insp_sitrep__<metric>__daily.csv` files.
-3. Use **spellings as they appear in the PDF** in `nom` (e.g. `Mongbwalu`, `Nyankunde`). Excel exports may include a UTF-8 BOM; that is fine before running `process.R`.
+1.  Add each new `SitRep_MVE_###:2026.pdf` under `raw/`.
+2.  Transcribe zone-level counts into the appropriate `processed/insp_sitrep__<metric>__daily.csv` files.
+3.  Use **spellings as they appear in the PDF** in `nom` (e.g. `Mongbwalu`, `Nyankunde`). Excel exports may include a UTF-8 BOM; that is fine before running `process.R`.
+4.  Use **ISO dates** (`YYYY-MM-DD`) in the `date` column when appending rows.
 
 ### 2. Name normalisation (`process.R`)
 
 `process.R` rewrites `nom` in every `processed/insp_sitrep__*__daily.csv` to match the **same canonical contract** as Python QA and `tools/build_geojson`:
 
-1. Load `data/shapefiles/DRC_Health_zones.shp` and build 519 canonical names (province suffix for duplicate `Nom` values, currently **Bili** and **Lubunga**).
-2. Load `data/aliases.csv` and map observed labels to canonical `nom` (shared across datasets; e.g. `Mongbwalu` → `Mongbalu`, `Nyankunde` → `Nyakunde`).
-3. Overwrite each processed CSV in place (`row.names = FALSE`, unquoted UTF-8).
+1.  Load `data/shapefiles/DRC_Health_zones.shp` and build 519 canonical names (province suffix for duplicate `Nom` values, currently **Bili** and **Lubunga**).
+2.  Load `data/aliases.csv` and map observed labels to canonical `nom` (shared across datasets; e.g. `Mongbwalu` → `Mongbalu`, `Nyankunde` → `Nyakunde`, `Ada` → `Adi`).
+3.  Overwrite each processed CSV in place (`row.names = FALSE`, unquoted UTF-8).
 
-The script **stops with an error** if any `nom` cannot be resolved, or if two rows share the same (`nom`, `date`) after mapping. Add a row to `data/aliases.csv` (with `source_dataset: insp_sitrep` in the notes column) before re-running.
+The script **stops with an error** if any `nom` cannot be resolved, or if two rows share the same key after mapping (`nom` + `date`, or `nom` + `date` + `PoE` when a `PoE` column is present). Add a row to `data/aliases.csv` (with `source_dataset: insp_sitrep` in the notes column) before re-running.
 
 ### 3. QA and build
 
 From the repository root:
 
-```bash
+``` bash
 Rscript data/insp_sitrep/process.R
 python -m tools.qa insp_sitrep
 ```
@@ -136,20 +185,20 @@ Then, if applicable: `python -m tools.build_geojson`.
 
 After a new sitrep:
 
-1. Commit the PDF under `raw/`.
-2. Append rows to the relevant `processed/*.csv` files using PDF zone labels in `nom`.
-3. Run name normalisation and QA (commands above).
+1.  Commit the PDF under `raw/`.
+2.  Append rows to the relevant `processed/*.csv` files using PDF zone labels in `nom` and ISO dates.
+3.  Run name normalisation and QA (commands above).
 
 **R packages:** `sf`, `here` (installed automatically if missing when the script runs).
 
-**Overwrites:** All twelve `processed/insp_sitrep__*__daily.csv` files (only the `nom` column changes unless you added new rows in step 2).
+**Overwrites:** All `processed/insp_sitrep__*__daily.csv` files (only the `nom` column changes unless you added new rows in step 2).
 
 ------------------------------------------------------------------------
 
 ## Data quality and limitations
 
 | Issue | Detail |
-|-------|--------|
+|----------------------------------|--------------------------------------|
 | **Manual transcription** | Values depend on human reading of PDF tables; verify against source PDFs before release. |
 | **Partial national coverage** | Only zones reported in INSP sitreps appear; absence of a zone is not evidence of zero cases. |
 | **`ND` cells** | Not all metrics are published for every zone on every date; do not impute without source confirmation. |
@@ -157,16 +206,17 @@ After a new sitrep:
 | **Missing sitrep 003** | `SitRep_MVE_003:2026.pdf` is not in `raw/`; date series may have gaps between 002 and 004. |
 | **Date semantics** | `date` is the sitrep **report date**, not necessarily onset or specimen collection date. |
 | **No confirmed-death “new” file** | Only cumulative confirmed deaths are exported; add `new_confirmed_deaths` if sitreps report it consistently. |
+| **PoE labels** | `PoE` values are sitrep-specific site names; they are not normalised to the shapefile. |
 | **No PDF automation** | `process.R` does not parse PDFs; it only normalises zone names in existing CSVs. |
 
 ------------------------------------------------------------------------
 
 ## Provenance
 
-- **Reports:** INSP SitRep MVE series (`raw/SitRep_MVE_*.pdf`).
-- **Geometry (for maps):** `data/shapefiles/DRC_Health_zones.shp`.
-- **Zone aliases:** `data/aliases.csv`.
-- **Metadata:** `metadata.yaml`.
-- **Project contact (INSP):** [pierre.akilimali@insp.cd](mailto:pierre.akilimali@insp.cd) (see repository root `README.md`).
+-   **Reports:** INSP SitRep MVE series (`raw/SitRep_MVE_*.pdf`).
+-   **Geometry (for maps):** `data/shapefiles/DRC_Health_zones.shp`.
+-   **Zone aliases:** `data/aliases.csv`.
+-   **Metadata:** `metadata.yaml`.
+-   **Project contact (INSP):** [pierre.akilimali\@insp.cd](mailto:pierre.akilimali@insp.cd) (see repository root `README.md`).
 
 For project-wide data conventions, see `data/README.md`.

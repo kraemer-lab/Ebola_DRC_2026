@@ -1,19 +1,21 @@
 source: "Institut National de Santé Publique (INSP) Situation Reports — SitRep MVE series (2026 Bundibugyo Ebolavirus outbreak)"
 citation: "Institut National de Santé Publique (INSP), Democratic Republic of the Congo. Situation reports on the 2026 Bundibugyo Ebolavirus outbreak (SitRep MVE 001–006, 2026). Health-zone geometry: DRC_Health_zones.shp (see data/shapefiles/)."
 source_url: "https://insp.cd/"
-retrieved_on: "2026-05-20"
+retrieved_on: "2026-05-23"
 license: "INSP outbreak sitreps; reuse with attribution to INSP and citation of the specific report number and date. Confirm distribution terms with INSP before external republication."
 contact: "pierre.akilimali@insp.cd"
 runtime: none
-period: "2026-05-14 to 2026-05-20"
+period: "2026-05-14 to 2026-05-23"
 notes: |
   Daily health-zone indicators manually extracted from INSP SitRep MVE PDFs in raw/
-  (SitRep_MVE_001, 002, 004, 005, 006:2026; report 003 not committed). Twelve
-  long-format vectors in processed/: insp_sitrep__<metric>__daily.csv with columns
-  nom, date, and one of new/cumulative suspected or confirmed cases or deaths, or
-  contact-tracing counts (listed, traced, isolated, seen). Cell value ND = not
-  reported in that sitrep. Outbreak-affected zones only (e.g. Mongbwalu, Rwampara,
-  Bunia, Nyankunde, Goma, Katwa, Butembo, Bambu in current files). Zone names may
-  need data/aliases.csv (Mongbwalu→Mongbalu, Nyankunde→Nyakunde). Complements
-  data/epi/ (WHO weekly external sitreps). process.R is a placeholder; no automated
-  regeneration. See README.md for file list, CSV contract, and limitations.
+  (SitRep_MVE_001, 002, 004, 005, 006, 007, 008, 009:2026; report 003 not committed). Twenty-nine
+  long-format vectors in processed/: insp_sitrep__<metric>__daily.csv. Core case,
+  death, and contact-tracing tables use columns nom, date, and one metric; PoE
+  tables add PoE (point-of-entry identifier within the zone). Cell value ND = not
+  reported in that sitrep. Outbreak-affected zones only (e.g. Adi, Aru, Bambu,
+  Bunia, Butembo, Goma, Katwa, Kilo, Komanda, Mahagi, Mangala, Miti-Murhesa,
+  Mongbalu, Nizi, Nyakunde, Rwampara, Tchomia in current files). Zone names may
+  need data/aliases.csv (Mongbwalu→Mongbalu, Nyankunde→Nyakunde, Ada→Adi).
+  Complements data/epi/ (WHO weekly external sitreps). process.R normalises nom
+  to canonical shapefile names; it does not parse PDFs. See README.md for the full
+  file list, CSV contract, and limitations.
