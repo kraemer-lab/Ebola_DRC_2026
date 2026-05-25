@@ -30,7 +30,7 @@ For the latest BDBV genomic data, please visit [Pathoplexus](https://pathoplexus
 
 ## Pending data sources
 
-We are tracking pending data sources over on the [issues tab](https://github.com/kraemer-lab/Ebola_DRC_2026/issues). If you want to request a specific publicly available dataset, raise an issue (although raising an issue does not guarantee that we will incorporate a dataset.
+We are tracking pending data sources over on the [issues tab](https://github.com/kraemer-lab/Ebola_DRC_2026/issues). If you want to request a specific publicly available dataset, raise an issue (although raising an issue does not guarantee that we will incorporate a dataset).
 
 # Current build (2026-05-22)
 
