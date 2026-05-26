@@ -6,7 +6,7 @@ Data for the 2026 Bundibugyo Ebolavirus (BDBV) outbreak.
 
 This work is led by the Institut National de Recherche Biomédicale (INRB) Kinshasa/One Health Institute for Africa (INOHA) Kinshasa (Dav Ebengo, Placide Mbala-Kingebeni and Tania Bishola), and the Institut National de Santé Publique (INSP) (Pierre Akilimali, Adelard Lofungola) in collaboration with partners across the University of Oxford and Northeastern University; please contact [dav.ebengo\@umie-inrb.org](mailto:dav.ebengo@umie-inrb.org) or [pierre.akilimali\@insp.cd](mailto:pierre.akilimali@insp.cd) for further information.
 
-Last successful build: **26 May 2026, 15:53:57 (UTC)** — `build/` on `main` at commit [`0973277`](https://github.com/kraemer-lab/Ebola_DRC_2026/commit/097327791ac6c50502c58f915ee1770da8619a2f) (data snapshot [`0973277`](https://github.com/kraemer-lab/Ebola_DRC_2026/commit/0973277), see `build/manifest.json`).
+Last successful build: **26 May 2026, 18:18:28 (UTC)** — `build/` on `main` at commit [`39f409e`](https://github.com/INRB-UMIE/Ebola_DRC_2026/commit/39f409e3c1031806e26a465db9ebae8c8ea3e1a8) (data snapshot [`39f409e`](https://github.com/INRB-UMIE/Ebola_DRC_2026/commit/39f409e), see `build/manifest.json`).
 
 # Data sources
 
@@ -134,61 +134,79 @@ build/
 
 # Contributor flow
 
+Contributors add or update data. PRs touch `data/**` (and `tests/**` and unrelated docs only) — never `build/`, `qa/`, `dist/`, or `README.md`'s build/release sections.
+
 0.  One-time setup (anyone cloning):
 
-    ```         
+    ```
     git lfs install
     python -m venv .venv && .venv/bin/pip install -r tools/requirements.txt
     ```
 
     LFS is required because binary raw blobs (`*.xlsx`, `*.zip`, `*.pdf`, `*.tif`, etc.) under `data/*/raw/` are stored via Git LFS — see `.gitattributes`.
 
-    Additionally, maintainers who will cut releases need:
-
-    -   `gh` CLI installed and authenticated (`gh auth login`).
-    -   `$EDITOR` environment variable set (used by `tools.release` for the description prompt).
-
 1.  Create `data/<your_dataset>/` with `raw/`, `metadata.yaml`, and (when you have outputs) `process.{py,R}` + `processed/`.
 
 2.  Make sure your processed filenames match the contract above. Add any name aliases your data uses to `data/aliases.csv`.
 
-3.  Sync with main using `git merge origin/main`. This is important, as if anyone else has made changes (e.g. adding a dataset), their QA reports will reflect a different timestamp to what your current branch expects on main, resulting in a lot of conflicts after you run the QA tests in the next step.
+3.  Sync with main:
+
+    ```
+    git merge origin/main
+    ```
 
 4.  Run unit tests + QA locally:
 
-    ```         
+    ```
     .venv/bin/python -m pytest tests/
     .venv/bin/python -m tools.qa
     ```
 
-5.  Rebuild the merged GeoJSON if you changed any vector data:
+5.  *(Optional)* Rebuild the merged GeoJSON locally to sanity-check your changes:
 
-    ```         
-    .venv/bin/python -m tools.build_geojson
+    ```
+    .venv/bin/python -m tools.build_geojson --skip-readme
     ```
 
-    On success, `build_geojson` also updates the **Last successful build** line (and `# Current build` date) in `README.md` from `build/manifest.json`. Pass `--skip-readme` to leave the README unchanged.
+    **Do not commit the resulting `build/`, `qa/qa_log.csv`, `qa/matrix_log.csv`, `qa/reports/`, or `README.md` updates.** Those land on `main` automatically when an admin merges your PR; including them in your PR causes merge conflicts and gets flagged in review.
 
-6.  Open a PR. CI runs `pytest` + `tools.qa` and blocks merge on any failures.
+6.  Open a PR. **Fill in the `## What's new` section** in the PR body (template provided) — that text becomes the GitHub Release description and the README "what's new" block when this PR is released. CI runs `pytest` + `tools.qa` and blocks merge on any failures.
 
-7.  Merges to `main` are manual, and will be carried out by an admin or maintainer after they review your PR.
+7.  Wait for admin review and merge. You don't run a release — CI does that automatically.
 
-8.  Publishing a release (maintainer task). After a merge to `main` introduces changes worth a new public snapshot:
+# Admin flow
 
-    ```         
-    .venv/bin/python -m tools.release
-    ```
+Admins (maintainers with write access to `main`) review PRs and merge.
 
-    This will:
+1.  Review the PR: data diff, CI green, `## What's new` section populated and accurate, contributor checklist ticked.
 
-    -   archive the current `build/` (plus QA logs and the previous build's description) as a GitHub Release tagged `build-YYYY-MM-DD-<sha>`
-    -   rebuild from current data
-    -   open `$EDITOR` to capture a "what's new" description for the new build
-    -   update `README.md` (current-build pointers + Past releases log)
+2.  Merge to `main`. **That's it for the common case** — the release workflow takes over.
 
-    Then `git add build/ qa/*.csv qa/reports/ README.md && git commit && git push` to land the new build alongside its description.
+Escape hatches:
 
-    Use `tools.build_geojson` (not `tools.release`) for normal local iteration — `tools.release` is only for cutting versioned snapshots.
+-   **Suppress release for a trivial change** (e.g. typo fix in a metadata file): include `[skip release]` in the merge commit message. CI will skip the release step.
+-   **Force a release without a data change** (e.g. after fixing `tools/build_geojson.py`): go to the Actions tab → "Release on data merge" → "Run workflow", and supply a description via the manual input.
+-   **Emergency local release** (CI is down): pull `main`, ensure `build/` is current (`python -m tools.build_geojson`), then run `python -m tools.release` interactively. Commit + push `build/`, `qa/`, `README.md` manually.
+
+Maintainers who will cut emergency local releases also need:
+
+-   `gh` CLI installed and authenticated (`gh auth login`).
+-   `$EDITOR` set (used by `tools.release` for the interactive description prompt).
+
+# Release internals
+
+The release workflow (`.github/workflows/release.yml`) runs on `push` to `main` when `data/**` changes (and on manual `workflow_dispatch`).
+
+What it does, in order:
+
+1.  Bails if the HEAD commit message contains `[skip release]`.
+2.  Extracts the `## What's new` section from the merge commit's PR body (via `gh api`).
+3.  Runs `python -m tools.qa`.
+4.  Runs `python -m tools.build_geojson`.
+5.  Runs `python -m tools.release --description-file <tmp> --non-interactive`, which packs `build/` as a `dist/<tag>.tar.gz` archive, publishes a GitHub Release tagged `build-YYYY-MM-DD-<sha>`, and updates the README.
+6.  Commits and pushes the resulting `build/`, `qa/`, and `README.md` back to `main` with `[skip release][skip ci]` in the commit message to prevent recursive triggering.
+
+The pre-existing `qa.yml` workflow runs `pytest` + `tools.qa` on PRs as the merge gate; it does not trigger on `build/`, `qa/`, or `README.md` changes, so the release workflow's commit-back does not retrigger it.
 
 # Citation
 
