@@ -30,11 +30,13 @@ We are tracking pending data sources over on the [issues tab](https://github.com
 
 # Current build (2026-05-26)
 
-Re-run `python -m tools.build_geojson` after pulling to regenerate locally; `build/manifest.json` carries the same information in machine-readable form.
+The current build is committed on `main` and refreshed automatically by CI on every merge that touches `data/**` — see [Release internals](#release-internals). `build/manifest.json` carries the same information in machine-readable form. Run `python -m tools.build_geojson` locally only if you're working on a branch with un-merged data changes.
 
 <!-- whats-new:start -->
 
-test <!-- whats-new:end -->
+INSP Sitrep data through report 010
+
+<!-- whats-new:end -->
 
 **Embedded in the GeoJSON** — each per-zone vector output appears under `feature.properties.<dataset>.<metric>` (matrices are excluded; see below). Daily series use the latest `date` per zone in the build snapshot:
 
